@@ -1,5 +1,5 @@
 server:
-  port: 10001
+  port: 0
 
 
 spring:
@@ -10,7 +10,27 @@ spring:
   profiles:
     active: dev
 
-
+  rabbitmq:
+    host: *
+    port: 0
+    username: *
+    password: *
+    mandatory:
+      template: true
+    #开启发送失败返回
+    publisher-returns: true
+    #开启发送确认
+    #消费端配置
+    listener:
+      simple:
+        #消费端
+        concurrency: 5
+        #最大消费端数
+        max-concurrency: 10
+        #自动签收auto  手动 manual
+        acknowledge-mode: manual
+        #限流（海量数据，同时只能过来一条）
+        prefetch: 1
 #日志
 logging:
   config: classpath:logback-spring.xml
